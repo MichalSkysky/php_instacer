@@ -1,7 +1,29 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: Jodminster
- * Date: 05.04.2016
- * Time: 20:23
+ * Class MyClass
  */
+class MyClass {
+    /**
+     * @return MyClass
+     */
+    static function create() {
+        return new self;
+    }
+}
+
+/**
+ * @return MyClass
+ */
+function MyClass() {
+    return new MyClass();
+}
+
+// classic
+$MyClass = new MyClass();
+
+// factory
+$MyClass = MyClass::create();
+
+// instancer
+$MyClass = MyClass();
