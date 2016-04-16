@@ -1,29 +1,16 @@
 <?php
 
-/**
- * Class MyClass
- */
-class MyClass {
-    /**
-     * @return MyClass
-     */
-    static function create() {
-        return new self;
-    }
-}
+define('CLI', php_sapi_name() === 'cli');
+define('DEBUG', true);
+define('DIR', __DIR__ . '/');
+define('LIB', DIR . 'lib/');
 
-/**
- * @return MyClass
- */
-function MyClass() {
-    return new MyClass();
-}
+require_once DIR . 'functions.php';
 
-// classic
-$MyClass = new MyClass();
+spl_autoload_register('autoload');
+register_shutdown_function('shutdown');
 
-// factory
-$MyClass = MyClass::create();
+DEBUG && update_instancers();
+require_once DIR . 'instancers.php';
 
-// instancer
-$MyClass = MyClass();
+!CLI && Bootstrapper();
