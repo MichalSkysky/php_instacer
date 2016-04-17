@@ -1,7 +1,15 @@
 <?php
 
 function autoload($class) {
-    import(LIB . str_replace('_', '/', $class) . '.php');
+    $file = str_replace('_', '/', $class) . '.php';
+
+    foreach ([LIB, APP.'models/', APP.'views/', APP.'controllers/'] as $path)
+        if (import($path.$file))
+            break;
+}
+
+function error2exception($no, $msg, $file, $line) {
+    throw new ErrorException($msg, 0, $no, $file, $line);
 }
 
 function shutdown() {
@@ -9,11 +17,14 @@ function shutdown() {
 }
 
 function update_instancers() {
+    if (!DEBUG && file_exists(DIR.'instancers.php'))
+        return;
+
     $nativeClasses = get_declared_classes();
-    array_map('import', r_scan(LIB));
+    array_map('import', array_merge(r_scan(APP), r_scan(LIB)));
     $instancers = [];
     $clean = function ($param) {
-        return preg_replace('/\d+ => /', '', str_replace(['array ( ', ', )'], ['[', ']'], preg_replace('/[\s\r\n\t]+/', ' ', $param)));
+        return str_replace('NULL', 'null', preg_replace('/\d+ => /', '', str_replace(['array ( ', ', )'], ['[', ']'], preg_replace('/[\s\r\n\t]+/', ' ', $param))));
     };
 
     foreach (array_diff(get_declared_classes(), $nativeClasses) as $className) {
@@ -22,7 +33,7 @@ function update_instancers() {
         if ($class->isInstantiable()) {
             $constructor = $class->getConstructor();
 
-            if ($constructor) {
+            if ($constructor && !$constructor->isInternal()) {
                 $params = [];
 
                 foreach ($constructor->getParameters() as $parameter) {
@@ -62,7 +73,11 @@ function debug($arg = null) {
 }
 
 function import ($file) {
-    require_once $file;
+    return (bool) file_exists($file) ? require_once $file : false;
+}
+
+function from($arr, $key, $default = null) {
+    return is_array($arr) && array_key_exists($key, $arr) ? $arr[$key] : $default;
 }
 
 function r_scan($dir) {
@@ -79,4 +94,8 @@ function r_scan($dir) {
     }
 
     return $files;
+}
+
+function camelCase($string, $sep = '-') {
+    return implode('', array_map('ucfirst', explode($sep, $string)));
 }

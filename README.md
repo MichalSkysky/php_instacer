@@ -21,7 +21,7 @@ search for a slim and nice solution.
 ###Classes
 - CamelCase &rarr; My_Custom_Class
 - Path_To_ClassName -> LIB + Path/To/ClassName.php
--
+- private / protected leading underscore &rarr; protected function _internalStuff()
 
 ###MVC
 - C knows M + V
