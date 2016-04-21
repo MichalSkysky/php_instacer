@@ -6,7 +6,7 @@ class CliController extends Controller {
     }
 
     function start() {
-        debug(function_exists('yaml_parse'));
+        
     }
 
     protected function _access() {

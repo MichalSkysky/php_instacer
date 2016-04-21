@@ -1,20 +1,22 @@
 <?php
 
 class Bootstrapper extends Object {
-    function __construct($args) {
+    static $base;
+
+    function boot($args) {
         list($controller, $action, $params) = CLI ? $this->_handleCli($args) : $this->_handleHttp();
 
-        call_user_func_array([$controller(), $action], $params);
+        return $controller()->call($action, $params);
     }
 
     protected function _handleHttp() {
         session_start();
 
-        $url = array_diff(explode('/', substr(from($_SERVER, 'REQUEST_URI'), strlen(substr(from($_SERVER, 'SCRIPT_NAME'), 0, -9)))), ['', null]);
+        $url = array_diff(explode('/', substr(preg_replace('/\?.*$/', '', from($_SERVER, 'REQUEST_URI')), strlen(self::$base = substr(from($_SERVER, 'SCRIPT_NAME'), 0, -9)))), ['', null]);
 
         return [
             camelCase($url ? array_shift($url) : 'home') . 'Controller',
-            camelCase($url ? array_shift($url) : 'index'),
+            lcfirst(camelCase($url ? array_shift($url) : 'index')),
             $url
         ];
     }

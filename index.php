@@ -21,4 +21,4 @@ require_once DIR . 'instancers.php';
 set_exception_handler([ErrorController(), 'handle']);
 set_error_handler('error2exception');
 
-Bootstrapper(CLI ? $argv : []);
+echo Bootstrapper()->boot(CLI ? $argv : []);

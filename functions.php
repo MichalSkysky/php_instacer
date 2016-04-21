@@ -21,7 +21,7 @@ function update_instancers() {
         return;
 
     $nativeClasses = get_declared_classes();
-    array_map('import', array_merge(r_scan(APP), r_scan(LIB)));
+    array_map('import', preg_grep('/\.php$/', array_merge(r_scan(APP), r_scan(LIB))));
     $instancers = [];
     $clean = function ($param) {
         return str_replace('NULL', 'null', preg_replace('/\d+ => /', '', str_replace(['array ( ', ', )'], ['[', ']'], preg_replace('/[\s\r\n\t]+/', ' ', $param))));
@@ -63,13 +63,13 @@ function update_instancers() {
 function debug($arg = null) {
     if (!DEBUG) return;
 
-    echo CLI ?: '<pre>';
+    echo CLI ? '' : '<pre>';
 
     foreach (func_get_args() as $arg) {
         is_array($arg) || is_object($arg) ? print_r($arg) : var_dump($arg);
     }
 
-    echo CLI ?: '</pre>';
+    echo CLI ? '' : '</pre>';
 }
 
 function import ($file) {
