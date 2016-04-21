@@ -13,6 +13,7 @@ search for a slim and nice solution.
     - Write only what you need
 - DRY
     - You need something twice, export it
+- No trailing whatever (lines, whitespaces)
 
 ###Functions
 - snake_case &rarr; my_custom_function()

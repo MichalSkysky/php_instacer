@@ -20,7 +20,7 @@ abstract class View extends Object {
         return $this->set('template', $this->_loadTemplate($template))->_loadTemplate($this->_base);
     }
 
-    function _loadTemplate($template) {
+    protected function _loadTemplate($template) {
         ob_start();
 
         try {
