@@ -6,8 +6,29 @@ abstract class View extends Object {
 
     protected $_base = 'index';
 
+    protected $_scripts = [
+        'jquery',
+        'script'
+    ];
+
+    protected $_styles = [
+        'style'
+    ];
+
     function set($var, $val) {
         $this->_vars[$var] = $val;
+
+        return $this;
+    }
+
+    function addStyle($file) {
+        $this->_styles[] = $file;
+
+        return $this;
+    }
+
+    function addScript($file) {
+        $this->_scripts[] = $file;
 
         return $this;
     }

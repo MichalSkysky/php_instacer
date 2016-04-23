@@ -4,8 +4,12 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
-        <script src="media/js/script.js"></script>
-        <link rel="stylesheet" type="text/css" href="media/css/style.css">
+<? foreach ($this->_scripts as $script): ?>
+        <script type="text/javascript" src="media/js/<?= $script ?>.js"></script>
+<? endforeach; ?>
+<? foreach ($this->_styles as $style): ?>
+        <link rel="stylesheet" type="text/css" href="media/css/<?= $style ?>.css">
+<? endforeach; ?>
     </head>
     <body>
         <?= $this->get('template') ?>

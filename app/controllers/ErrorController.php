@@ -1,7 +1,7 @@
 <?php
 
 class ErrorController extends Controller {
-    function handle(Exception $e) {
+    static function handle(Exception $e) {
         debug($e);
     }
 }

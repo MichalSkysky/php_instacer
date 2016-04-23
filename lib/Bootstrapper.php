@@ -3,29 +3,35 @@
 class Bootstrapper extends Object {
     static $base;
 
-    function boot($args) {
-        list($controller, $action, $params) = CLI ? $this->_handleCli($args) : $this->_handleHttp();
+    /**
+     * @var Controller
+     */
+    protected $_controller;
 
-        return $controller()->call($action, $params);
+    protected $_action;
+
+    protected $_params = [];
+
+    function __construct($args = []) {
+        CLI ? $this->_handleCli($args) : $this->_handleHttp();
+
+        echo $this->_controller->call($this->_action, $this->_params);
     }
 
     protected function _handleHttp() {
         session_start();
 
         $url = array_diff(explode('/', substr(preg_replace('/\?.*$/', '', from($_SERVER, 'REQUEST_URI')), strlen(self::$base = substr(from($_SERVER, 'SCRIPT_NAME'), 0, -9)))), ['', null]);
+        $controller = camelCase($url ? array_shift($url) : 'home') . 'Controller';
 
-        return [
-            camelCase($url ? array_shift($url) : 'home') . 'Controller',
-            lcfirst(camelCase($url ? array_shift($url) : 'index')),
-            $url
-        ];
+        $this->_controller = new $controller;
+        $this->_action = lcfirst(camelCase($url ? array_shift($url) : 'index'));
+        $this->_params = $url;
     }
 
     protected function _handleCli($args) {
-        return [
-            'cliController',
-            from($args, 1, 'start'),
-            count($args) > 2 ? array_slice($args, 2) : []
-        ];
+        $this->_controller = new CliController;
+        $this->_action = from($args, 1, 'start');
+        $this->_params = count($args) > 2 ? array_slice($args, 2) : [];
     }
 }

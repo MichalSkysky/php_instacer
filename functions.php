@@ -5,7 +5,9 @@ function autoload($class) {
 
     foreach ([LIB, APP.'models/', APP.'views/', APP.'controllers/'] as $path)
         if (import($path.$file))
-            break;
+            return;
+
+    eval("class $class{function __construct(){throw new Exception('unknown class $class');}}");
 }
 
 function error2exception($no, $msg, $file, $line) {
@@ -14,50 +16,6 @@ function error2exception($no, $msg, $file, $line) {
 
 function shutdown() {
     // do shutdown stuff
-}
-
-function update_instancers() {
-    if (!DEBUG && file_exists(DIR.'instancers.php'))
-        return;
-
-    $nativeClasses = get_declared_classes();
-    array_map('import', preg_grep('/\.php$/', array_merge(r_scan(APP), r_scan(LIB))));
-    $instancers = [];
-    $clean = function ($param) {
-        return str_replace('NULL', 'null', preg_replace('/\d+ => /', '', str_replace(['array ( ', ', )'], ['[', ']'], preg_replace('/[\s\r\n\t]+/', ' ', $param))));
-    };
-
-    foreach (array_diff(get_declared_classes(), $nativeClasses) as $className) {
-        $class = new ReflectionClass($className);
-
-        if ($class->isInstantiable()) {
-            $constructor = $class->getConstructor();
-
-            if ($constructor && !$constructor->isInternal()) {
-                $params = [];
-
-                foreach ($constructor->getParameters() as $parameter) {
-                    $type = $parameter->isArray() ? 'array ' : ($parameter->getClass() ? $parameter->getClass()->getName() . ' ' : '');
-                    $reference = $parameter->isPassedByReference() ? '&' : '';
-                    $name = '$'.$parameter->getName();
-                    $value = $parameter->isOptional() ? ' = ' . $clean(var_export($parameter->getDefaultValue(), true)) : '';
-
-                    $params[$name] = $type.$reference.$name.$value;
-                }
-
-                $paramNames = implode(', ', array_keys($params));
-                $params = implode(', ', $params);
-
-                $instancers[$className] = "function $className($params) { return new $className($paramNames); }";
-            } else {
-                $instancers[$className] = "function $className() { return new $className; }";
-            }
-        }
-    }
-
-    ksort($instancers);
-
-    file_put_contents(DIR.'instancers.php', "<?php\n\n".implode("\n", $instancers));
 }
 
 function debug($arg = null) {
@@ -72,7 +30,7 @@ function debug($arg = null) {
     echo CLI ? '' : '</pre>';
 }
 
-function import ($file) {
+function import($file) {
     return (bool) file_exists($file) ? require_once $file : false;
 }
 

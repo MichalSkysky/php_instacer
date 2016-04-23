@@ -26,11 +26,13 @@ abstract class Controller extends Object {
         }
 
         if ($this->_hasModel) {
-            $this->_model = call_user_func($this->getShortName());
+            $this->_model = $this->getShortName();
+            $this->_model = new $this->_model;
         }
 
         if ($this->_hasView) {
-            $this->_view = call_user_func($this->getShortName() . 'View');
+            $this->_view = $this->getShortName() . 'View';
+            $this->_view = new $this->_view;
         }
     }
 

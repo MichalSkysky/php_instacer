@@ -27,3 +27,10 @@ search for a slim and nice solution.
 ###MVC
 - C knows M + V
 - M and V don't know anything beside their respective components
+
+######Side-Node
+
+I found one major flaw in this concept. There is no autoloading mechanism for function. Therefore,
+if a non-existing instancer is called it will cause an fatal error. To avoid this one would have
+to wrap everything into creator functions or methods. So technically, this principle is flawed
+and should not be considered if there is a risk of calling undefined instancers.
