@@ -22,10 +22,10 @@ class Bootstrapper extends Object {
         session_start();
 
         $url = array_diff(explode('/', substr(preg_replace('/\?.*$/', '', from($_SERVER, 'REQUEST_URI')), strlen(self::$base = substr(from($_SERVER, 'SCRIPT_NAME'), 0, -9)))), ['', null]);
-        $controller = camelCase($url ? array_shift($url) : 'home') . 'Controller';
+        $controller = camel_case($url ? array_shift($url) : 'home') . 'Controller';
 
         $this->_controller = new $controller;
-        $this->_action = lcfirst(camelCase($url ? array_shift($url) : 'index'));
+        $this->_action = lcfirst(camel_case($url ? array_shift($url) : 'index'));
         $this->_params = $url;
     }
 

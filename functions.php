@@ -54,6 +54,10 @@ function r_scan($dir) {
     return $files;
 }
 
-function camelCase($string, $sep = '-') {
+function camel_case($string, $sep = '-') {
     return implode('', array_map('ucfirst', explode($sep, $string)));
+}
+
+function snake_case($string, $sep = '_') {
+    return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
 }
