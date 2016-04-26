@@ -1,0 +1,16 @@
+<phpunit>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <file>index.php</file>
+            <file>functions.php</file>
+            <directory>app</directory>
+            <directory>lib</directory>
+        </whitelist>
+        <blacklist>
+            <directory>test</directory>
+            <excluce>
+                <directory>test</directory>
+            </excluce>
+        </blacklist>
+    </filter>
+</phpunit>
