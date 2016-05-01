@@ -4,7 +4,7 @@ abstract class Model {
 
     protected static $_pdo;
 
-    protected $_dbo;
+    protected $_dbh;
 
     public $name;
 
@@ -16,19 +16,19 @@ abstract class Model {
             self::$_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
 
-        $this->_dbo = self::$_pdo;
+        $this->_dbh = self::$_pdo;
     }
 
     function tables() {
-        return $this->_dbo->query('SHOW FULL TABLES WHERE Table_type = "BASE TABLE"')->fetchAll(PDO::FETCH_COLUMN);
+        return $this->_dbh->query('SHOW FULL TABLES WHERE Table_type = "BASE TABLE"')->fetchAll(PDO::FETCH_COLUMN);
     }
 
     function views() {
-        return $this->_dbo->query('SHOW FULL TABLES WHERE Table_type = "VIEW"')->fetchAll(PDO::FETCH_COLUMN);
+        return $this->_dbh->query('SHOW FULL TABLES WHERE Table_type = "VIEW"')->fetchAll(PDO::FETCH_COLUMN);
     }
 
     function columns() {
-        return $this->_dbo->query('SHOW COLUMNS IN `' . $this->name . '`')->fetchAll(PDO::FETCH_COLUMN);
+        return $this->_dbh->query('SHOW COLUMNS IN `' . $this->name . '`')->fetchAll(PDO::FETCH_COLUMN);
     }
 
     function save() {

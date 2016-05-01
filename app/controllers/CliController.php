@@ -6,7 +6,7 @@ class CliController extends Controller {
     }
 
     function start() {
-        
+
     }
 
     protected function _access() {

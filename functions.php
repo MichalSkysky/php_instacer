@@ -7,7 +7,9 @@ function autoload($class) {
         if (import($path.$file))
             return;
 
-    eval("class $class{function __construct(){throw new Exception('unknown class $class');}}");
+    if (!CLI) {
+        eval("class $class{function __construct(){throw new Exception('unknown class $class');}}");
+    }
 }
 
 function error2exception($no, $msg, $file, $line) {

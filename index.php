@@ -15,4 +15,4 @@ register_shutdown_function('shutdown');
 set_error_handler('error2exception');
 set_exception_handler([new ErrorController, 'handle']);
 
-new Bootstrapper(CLI ? $argv : []);
+empty($_SERVER['unittest']) && new Bootstrapper(CLI ? $argv : []);
