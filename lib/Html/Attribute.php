@@ -33,9 +33,6 @@ class Html_Attribute extends Html
         return $this->_value;
     }
 
-    /**
-     * @param null $value
-     */
     public function setValue($value)
     {
         $this->_value = $value;
