@@ -13,21 +13,21 @@ class Html_Attribute extends Html
 
     function render()
     {
+        $return = null;
+
         if ($this->_value !== null) {
             if (is_bool($this->_value)) {
                 if ($this->_value === true) {
-                    return ' ' . $this->_name;
+                    $return = ' ' . $this->_name;
                 }
             } else {
-                return ' ' . $this->_name . '="' . htmlspecialchars($this->_value) . '"';
+                $return = ' ' . $this->_name . '="' . htmlspecialchars($this->_value) . '"';
             }
         }
 
+        return $return;
     }
 
-    /**
-     * @return null
-     */
     public function getValue()
     {
         return $this->_value;
