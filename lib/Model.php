@@ -2,8 +2,14 @@
 
 abstract class Model {
 
+    /**
+     * @var PDO
+     */
     protected static $_pdo;
 
+    /**
+     * @var PDO
+     */
     protected $_dbh;
 
     public $name;
