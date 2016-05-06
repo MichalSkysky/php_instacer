@@ -12,8 +12,7 @@ abstract class Model {
         $this->name = snake_case(get_class($this));
 
         if (!self::$_pdo) {
-            self::$_pdo = new PDO('', '', '');
-            self::$_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->_connect();
         }
 
         $this->_dbh = self::$_pdo;
@@ -45,5 +44,15 @@ abstract class Model {
 
     protected function _delete() {
 
+    }
+
+    protected function _connect()
+    {
+        $config = Config::read('database');
+        $dsn = $config['driver'] . ':host=' . $config['host'] . ';dbname=' . $config['database'];
+
+        self::$_pdo = new PDO($dsn, $config['user'], $config['password']);
+        self::$_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        self::$_pdo->query('SET NAMES UTF8');
     }
 }
