@@ -18,9 +18,9 @@ class Image
         $this->_y = $y;
     }
 
-    public function setBackground($r, $g, $b, $a = null)
+    public function setBackground(Color $color)
     {
-        $this->_background = func_get_args();
+        $this->_background = $color;
 
         return $this;
     }
@@ -30,12 +30,7 @@ class Image
         $img = imagecreatetruecolor($this->_x, $this->_y);
 
         if ($this->_background) {
-            if (count($this->_background) == 3) {
-                $backgroundColor = call_user_func_array('imagecolorallocate', array_merge([$img], $this->_background));
-            } else {
-                $backgroundColor = call_user_func_array('imagecolorallocatealpha', array_merge([$img], $this->_background));
-            }
-
+            $backgroundColor = $this->_background->allocate($img);
             imagefill($img, 0, 0, $backgroundColor);
         }
 

@@ -8,4 +8,14 @@ class Utils {
             return $value;
         return [$value];
     }
+
+    static function toHex($int, $length) {
+        $hex = dechex($int);
+
+        while (strlen($hex) < $length) {
+            $hex = '0' . $hex;
+        }
+
+        return $hex;
+    }
 }
