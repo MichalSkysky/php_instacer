@@ -19,7 +19,7 @@ class Bootstrapper extends Object {
     }
 
     protected function _handleHttp() {
-        session_start();
+        Session::start();
 
         $url = array_diff(explode('/', substr(preg_replace('/\?.*$/', '', from($_SERVER, 'REQUEST_URI')), strlen(self::$base = substr(from($_SERVER, 'SCRIPT_NAME'), 0, -9)))), ['', null]);
         $controller = camel_case($url ? array_shift($url) : 'home') . 'Controller';

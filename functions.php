@@ -43,7 +43,7 @@ function from($arr, $key, $default = null) {
 function r_scan($dir) {
     $files = [];
 
-    foreach (array_diff(scandir($dir), ['.', '..']) as $file) {
+    foreach (array_slice(scandir($dir), 2) as $file) {
         $path = "$dir/$file";
 
         if (is_dir($path)) {
