@@ -47,13 +47,15 @@ class Session
 
     private function _read($key = null)
     {
-        if ($this->isStarted()) {
-            if ($key !== null) {
-                return from($_SESSION, $key);
-            } else {
-                return $_SESSION;
-            }
+        if (!$this->isStarted()) {
+            return null;
         }
+
+        if ($key) {
+            return from($_SESSION, $key);
+        }
+
+        return $_SESSION;
     }
 
 
