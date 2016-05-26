@@ -18,4 +18,45 @@ class Utils {
 
         return $hex;
     }
+
+    static function deepWrite($key, &$target, $value) {
+        eval('$target[\'' . str_replace('.', "']['", $key) . '\'] = $value;');
+    }
+
+    static function deepDelete($key, &$target) {
+        debug('unset($target[\'' . str_replace('.', "']['", $key) . '\']);');
+        eval('unset($target[\'' . str_replace('.', "']['", $key) . '\']);');
+    }
+
+    static function deepRead($key, $target) {
+        if (!is_array($target)) {
+            return null;
+        }
+
+        foreach (explode('.', $key) as $key) {
+            if (!array_key_exists($key, $target)) {
+                return null;
+            }
+
+            $target = $target[$key];
+        }
+
+        return $target;
+    }
+
+    static function deepCheck($key, $target) {
+        if (!is_array($target)) {
+            return false;
+        }
+
+        foreach (explode('.', $key) as $key) {
+            if (!array_key_exists($key, $target)) {
+                return false;
+            }
+
+            $target = $target[$key];
+        }
+
+        return true;
+    }
 }

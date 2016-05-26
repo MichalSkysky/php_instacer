@@ -44,6 +44,17 @@ class Session
         self::getInstance()->_write($key, $value);
     }
 
+    public static function delete($key)
+    {
+        self::getInstance()->_delete($key);
+    }
+
+
+    private function _delete($key)
+    {
+        Utils::deepDelete($key, $_SESSION);
+    }
+
 
     private function _read($key = null)
     {
@@ -52,7 +63,7 @@ class Session
         }
 
         if ($key) {
-            return from($_SESSION, $key);
+            return Utils::deepRead($key, $_SESSION);
         }
 
         return $_SESSION;
@@ -75,13 +86,13 @@ class Session
             return false;
         }
 
-        return array_key_exists($key, $_SESSION);
+        return Utils::deepCheck($key, $_SESSION);
     }
 
     private function _write($key, $value)
     {
         if ($this->isStarted()) {
-            $_SESSION[$key] = $value;
+            Utils::deepWrite($key, $_SESSION, $value);
         }
     }
 

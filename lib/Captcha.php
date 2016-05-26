@@ -11,11 +11,12 @@ class Captcha extends Image
         $this->_randomString = $this->getRandomString();
 
         if (Session::isStarted()) {
-            Session::write('captcha.id', uniqid('captcha.', true));
-
             if (Session::check('captcha.id')) {
-                Session::write(Session::read('captcha.id'), $this->_randomString);
+                Session::delete(Session::read('captcha.id'));
             }
+
+            Session::write('captcha.id', uniqid('captcha.'));
+            Session::write(Session::read('captcha.id'), $this->_randomString);
         }
 
         debug($_SESSION);
