@@ -24,7 +24,6 @@ class Utils {
     }
 
     static function deepDelete($key, &$target) {
-        debug('unset($target[\'' . str_replace('.', "']['", $key) . '\']);');
         eval('unset($target[\'' . str_replace('.', "']['", $key) . '\']);');
     }
 
