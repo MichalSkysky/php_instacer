@@ -10,6 +10,10 @@ class Curl
 
     protected $_delay = false;
 
+    protected $_code;
+
+    protected $_error;
+
     static $timeout = 0;
 
     protected static $_userAgents = [
@@ -24,8 +28,11 @@ class Curl
         CURLOPT_ENCODING => '',
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => false,
-        CURLOPT_AUTOREFERER => true
+        CURLOPT_HEADER => true,
+        CURLOPT_AUTOREFERER => true,
+        CURLOPT_VERBOSE => true,
+        CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_SSL_VERIFYPEER => false,
     ];
 
     public function __construct($url = null, $options = [])
@@ -62,6 +69,9 @@ class Curl
 
         $result = curl_exec($ch);
         self::$timeout = time();
+
+        $this->_code = curl_getinfo($ch);
+        $this->_error = curl_errno($ch) . ' ' . curl_error($ch);
 
         curl_close($ch);
 
