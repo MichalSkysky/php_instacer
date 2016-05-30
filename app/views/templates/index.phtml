@@ -1,9 +1,11 @@
+<?php /* @var View $this */ ?>
 <!DOCTYPE html>
 
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <base href="<?= $this->get('base') ?>">
+        <title><?= $this->get('title') ?></title>
 <? foreach ($this->_scripts as $script): ?>
         <script type="text/javascript" src="media/js/<?= $script ?>.js"></script>
 <? endforeach; ?>

@@ -2,7 +2,10 @@
 
 abstract class View extends Object {
 
-    protected $_vars = [];
+    protected $_vars = [
+        'title' => 'TITLE',
+        'base' => 'http://localhost/php_instancer/'
+    ];
 
     protected $_base = 'index';
 
