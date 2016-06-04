@@ -10,7 +10,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 {
     protected $coverageScriptUrl = 'http://localhost/ccc/ccc.php';
 
-    public $url = 'http://localhost/php_instancer/';
+    public $url = 'http://localhost/php_instancer/home/go-home';
 
     public $browser = 'firefox';
 
