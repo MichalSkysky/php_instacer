@@ -28,7 +28,7 @@ class Curl
         CURLOPT_ENCODING => '',
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADER => true,
+        CURLOPT_HEADER => false,
         CURLOPT_AUTOREFERER => true,
         CURLOPT_VERBOSE => true,
         CURLOPT_SSL_VERIFYHOST => false,
